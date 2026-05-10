@@ -39,7 +39,7 @@ services:
     environment:
       - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
     ports:
-      - "3000:80"
+      - "3333:80"
     networks:
       - iapost_network
     depends_on:

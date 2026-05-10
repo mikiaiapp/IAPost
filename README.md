@@ -55,7 +55,7 @@ Para un correcto despliegue, debes crear la estructura de carpetas necesaria en 
    ```
 
 4. **Acceder a la aplicación:**
-   - Frontend: `http://[IP-DEL-NAS]:3000`
+   - Frontend: `http://[IP-DEL-NAS]:3333`
    - API Backend: `http://[IP-DEL-NAS]:8000/docs`
 
 ## ⚙️ Configuración de IA
