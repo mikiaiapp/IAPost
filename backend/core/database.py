@@ -11,16 +11,32 @@ class Base(DeclarativeBase):
     pass
 
 
-# Ensure SQLite URL uses aiosqlite driver
+from sqlalchemy import event
+
+# Ensure SQLite URL uses aiosqlite driver and absolute path
 db_url = settings.DATABASE_URL
-if db_url.startswith("sqlite:///") and "aiosqlite" not in db_url:
-    db_url = db_url.replace("sqlite:///", "sqlite+aiosqlite:///")
+if "sqlite" in db_url:
+    if "aiosqlite" not in db_url:
+        db_url = db_url.replace("sqlite:///", "sqlite+aiosqlite:///")
+    # Ensure absolute path if relative is provided
+    if "///./" in db_url:
+        db_url = db_url.replace("///./", "////app/")
 
 engine = create_async_engine(
     db_url,
     echo=settings.DEBUG,
     connect_args={"check_same_thread": False} if "sqlite" in db_url else {},
 )
+
+# SQLite performance and compatibility pragmas
+@event.listens_for(engine.sync_engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    if "sqlite" in settings.DATABASE_URL:
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA synchronous=NORMAL")
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
 
 AsyncSessionLocal = async_sessionmaker(
     engine,
