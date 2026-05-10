@@ -38,6 +38,8 @@ class Settings(BaseSettings):
     @classmethod
     def parse_cors(cls, v):
         if isinstance(v, str):
+            if v.strip() == "*":
+                return ["*"]
             return [origin.strip() for origin in v.split(",")]
         return v
 

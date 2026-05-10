@@ -16,11 +16,14 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    console.log("🚀 Intentando registro en:", api.defaults.baseURL + '/auth/register');
     try {
-      await api.post('/auth/register', form)
+      const res = await api.post('/auth/register', form)
+      console.log("✅ Registro exitoso:", res.data);
       toast.success('Cuenta creada. Revisa tu email para verificarla.')
       navigate('/login')
     } catch (err: any) {
+      console.error("❌ Error en registro:", err.response || err);
       toast.error(err.response?.data?.detail || 'Error al registrarse')
     } finally {
       setLoading(false)
@@ -28,100 +31,156 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-white">
-      {/* Soft background decor */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-brand-50 rounded-full blur-[120px]" />
-        <div className="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-purple-50 rounded-full blur-[120px]" />
-      </div>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(-45deg, #f8fafc, #eff6ff, #f5f3ff, #f8fafc)',
+      backgroundSize: '400% 400%',
+      animation: 'gradientBG 15s ease infinite',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem',
+      fontFamily: 'system-ui, sans-serif',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
+      <style>{`
+        @keyframes gradientBG {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        .premium-input {
+          width: 100%;
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 1rem;
+          padding: 1rem 1.25rem;
+          font-size: 1rem;
+          transition: all 0.3s;
+          outline: none;
+          box-sizing: border-box;
+          color: #0f172a;
+        }
+        .premium-input:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        .premium-btn {
+          width: 100%;
+          background: #0f172a;
+          color: white;
+          font-weight: 800;
+          padding: 1.25rem;
+          border-radius: 1rem;
+          border: none;
+          cursor: pointer;
+          transition: all 0.4s;
+          position: relative;
+          overflow: hidden;
+          margin-top: 1rem;
+        }
+        .premium-btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.4);
+          background: #1e293b;
+        }
+        .premium-btn:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+      `}</style>
 
-      <motion.div
+      <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md relative z-10"
+        style={{
+          width: '100%',
+          maxWidth: '500px',
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(20px)',
+          padding: '3rem',
+          borderRadius: '2.5rem',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.1)',
+          border: '1px solid rgba(255, 255, 255, 1)',
+          zIndex: 10
+        }}
       >
-        <div className="text-center mb-10">
-          <div className="inline-flex w-20 h-20 rounded-3xl bg-slate-900 items-center justify-center mb-6 shadow-2xl shadow-slate-200">
-            <Zap className="w-10 h-10 text-white" />
+        <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <div style={{ background: '#0f172a', padding: '0.75rem', borderRadius: '1rem', display: 'flex' }}>
+              <Zap style={{ color: 'white', width: '1.5rem', height: '1.5rem' }} />
+            </div>
+            <h1 style={{ fontSize: '2rem', fontWeight: 900, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>IAPost</h1>
           </div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">IAPost</h1>
-          <p className="text-slate-500 mt-2 font-medium tracking-wide uppercase text-xs">Join the Network</p>
+          <p style={{ color: '#3b82f6', fontSize: '0.75rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', margin: '0 0 0.5rem 0' }}>
+            v1.0.8 - Final Fix
+          </p>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1e293b', margin: '0 0 0.5rem 0' }}>Crear Cuenta</h2>
+          <p style={{ color: '#64748b', margin: 0, fontSize: '0.95rem' }}>Empieza tu viaje con inteligencia artificial</p>
         </div>
 
-        <div className="glass-card p-10 shadow-2xl shadow-slate-200/50 border-white/50">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-slate-900">Crear Cuenta</h2>
-            <p className="text-slate-500 text-sm">Empieza tu viaje con inteligencia artificial</p>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', marginLeft: '0.2rem' }}>Nombre Completo</label>
+            <input 
+              type="text"
+              required
+              className="premium-input"
+              placeholder="Miki Fernandez"
+              value={form.full_name}
+              onChange={set('full_name')}
+            />
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-1">
-              <label className="label text-slate-700">Nombre Completo</label>
-              <input 
-                type="text" 
-                className="input-field" 
-                placeholder="Miki Fernandez" 
-                value={form.full_name} 
-                onChange={set('full_name')} 
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="label text-slate-700">Nombre de Usuario</label>
-              <input 
-                type="text" 
-                className="input-field" 
-                placeholder="miki_ai" 
-                value={form.username} 
-                onChange={set('username')} 
-                required 
-                minLength={3} 
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="label text-slate-700">Email Profesional</label>
-              <input 
-                type="email" 
-                className="input-field" 
-                placeholder="tu@empresa.com" 
-                value={form.email} 
-                onChange={set('email')} 
-                required 
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="label text-slate-700">Contraseña</label>
-              <input 
-                type="password" 
-                className="input-field" 
-                placeholder="••••••••" 
-                value={form.password} 
-                onChange={set('password')} 
-                required 
-                minLength={8} 
-              />
-            </div>
-
-            <button 
-              type="submit" 
-              className="btn-creative w-full mt-6" 
-              disabled={loading}
-            >
-              <span>
-                {loading && <Loader2 className="w-6 h-6 animate-spin inline mr-2" />}
-                Registrarme Ahora
-              </span>
-            </button>
-          </form>
-
-          <div className="mt-10 pt-8 border-t border-slate-100 text-center">
-            <p className="text-slate-500 text-sm">
-              ¿Ya tienes una cuenta?{' '}
-              <Link to="/login" className="text-brand-600 hover:text-brand-700 font-black underline decoration-brand-600/30 underline-offset-4">
-                Inicia sesión
-              </Link>
-            </p>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', marginLeft: '0.2rem' }}>Usuario</label>
+            <input 
+              type="text"
+              required
+              className="premium-input"
+              placeholder="miki"
+              value={form.username}
+              onChange={set('username')}
+            />
           </div>
-        </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', marginLeft: '0.2rem' }}>Email Profesional</label>
+            <input 
+              type="email"
+              required
+              className="premium-input"
+              placeholder="tu@email.com"
+              value={form.email}
+              onChange={set('email')}
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#475569', marginBottom: '0.5rem', marginLeft: '0.2rem' }}>Contraseña</label>
+            <input 
+              type="password"
+              required
+              className="premium-input"
+              placeholder="••••••••"
+              value={form.password}
+              onChange={set('password')}
+            />
+          </div>
+
+          <button 
+            type="submit" 
+            className="premium-btn"
+            disabled={loading}
+          >
+            {loading ? 'Construyendo cuenta...' : 'Registrarme Ahora'}
+          </button>
+        </form>
+
+        <p style={{ marginTop: '2rem', textAlign: 'center', color: '#64748b', fontSize: '0.95rem', fontWeight: 500 }}>
+          ¿Ya tienes cuenta? <Link to="/login" style={{ color: '#3b82f6', fontWeight: 800, textDecoration: 'none' }}>Inicia sesión</Link>
+        </p>
       </motion.div>
     </div>
   )
