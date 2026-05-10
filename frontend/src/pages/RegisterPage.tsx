@@ -28,61 +28,49 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background blobs for visual impact */}
-      <div className="bg-glow">
-        <div className="blob blob-blue" />
-        <div className="blob blob-purple" />
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-white">
+      {/* Soft background decor */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-brand-50 rounded-full blur-[120px]" />
+        <div className="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-purple-50 rounded-full blur-[120px]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo Section */}
         <div className="text-center mb-10">
-          <motion.div 
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-500 to-indigo-600 items-center justify-center mb-6 shadow-2xl shadow-brand-500/40 relative"
-          >
-            <Zap className="w-10 h-10 text-white fill-white/10" />
-            <div className="absolute inset-0 rounded-3xl bg-white/20 blur-xl -z-10 animate-pulse" />
-          </motion.div>
-          <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight">
-            IAPost
-          </h1>
-          <p className="text-slate-400 mt-2 font-medium tracking-wide uppercase text-xs opacity-70">
-            Join the Intelligent Network
-          </p>
+          <div className="inline-flex w-20 h-20 rounded-3xl bg-slate-900 items-center justify-center mb-6 shadow-2xl shadow-slate-200">
+            <Zap className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">IAPost</h1>
+          <p className="text-slate-500 mt-2 font-medium tracking-wide uppercase text-xs">Join the Network</p>
         </div>
 
-        <div className="glass-card p-8 backdrop-blur-2xl border-white/10 shadow-2xl relative overflow-hidden group">
+        <div className="glass-card p-10 shadow-2xl shadow-slate-200/50 border-white/50">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white">Nueva Cuenta</h2>
-            <p className="text-slate-400 text-sm">Empieza a automatizar tu presencia en LinkedIn</p>
+            <h2 className="text-2xl font-bold text-slate-900">Crear Cuenta</h2>
+            <p className="text-slate-500 text-sm">Empieza tu viaje con inteligencia artificial</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-1">
-              <label className="label text-xs uppercase tracking-widest opacity-60">Nombre completo</label>
+              <label className="label text-slate-700">Nombre Completo</label>
               <input 
                 type="text" 
-                className="input-field bg-white/5 border-white/5 focus:bg-white/10" 
-                placeholder="Nombre Apellido" 
+                className="input-field" 
+                placeholder="Miki Fernandez" 
                 value={form.full_name} 
                 onChange={set('full_name')} 
               />
             </div>
             <div className="space-y-1">
-              <label className="label text-xs uppercase tracking-widest opacity-60">Nombre de usuario</label>
+              <label className="label text-slate-700">Nombre de Usuario</label>
               <input 
                 type="text" 
-                className="input-field bg-white/5 border-white/5 focus:bg-white/10" 
-                placeholder="usuario123" 
+                className="input-field" 
+                placeholder="miki_ai" 
                 value={form.username} 
                 onChange={set('username')} 
                 required 
@@ -90,22 +78,22 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-1">
-              <label className="label text-xs uppercase tracking-widest opacity-60">Email corporativo</label>
+              <label className="label text-slate-700">Email Profesional</label>
               <input 
                 type="email" 
-                className="input-field bg-white/5 border-white/5 focus:bg-white/10" 
-                placeholder="tu@email.com" 
+                className="input-field" 
+                placeholder="tu@empresa.com" 
                 value={form.email} 
                 onChange={set('email')} 
                 required 
               />
             </div>
             <div className="space-y-1">
-              <label className="label text-xs uppercase tracking-widest opacity-60">Contraseña</label>
+              <label className="label text-slate-700">Contraseña</label>
               <input 
                 type="password" 
-                className="input-field bg-white/5 border-white/5 focus:bg-white/10" 
-                placeholder="Mínimo 8 caracteres" 
+                className="input-field" 
+                placeholder="••••••••" 
                 value={form.password} 
                 onChange={set('password')} 
                 required 
@@ -115,30 +103,25 @@ export default function RegisterPage() {
 
             <button 
               type="submit" 
-              className="btn-primary w-full py-4 mt-4 shadow-xl shadow-brand-600/30 group relative overflow-hidden" 
+              className="btn-creative w-full py-5 mt-6" 
               disabled={loading}
             >
-              <span className="relative z-10 flex items-center justify-center gap-2 text-lg">
-                {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-                Crear cuenta
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                {loading && <Loader2 className="w-6 h-6 animate-spin" />}
+                Registrarme Ahora
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-white/5 text-center">
+          <div className="mt-10 pt-8 border-t border-slate-100 text-center">
             <p className="text-slate-500 text-sm">
               ¿Ya tienes una cuenta?{' '}
-              <Link to="/login" className="text-white hover:text-brand-400 font-bold transition-colors">
+              <Link to="/login" className="text-brand-600 hover:text-brand-700 font-black underline decoration-brand-600/30 underline-offset-4">
                 Inicia sesión
               </Link>
             </p>
           </div>
         </div>
-
-        <p className="text-center text-slate-600 text-[10px] uppercase tracking-[0.2em] mt-10">
-          Secure Registration &bull; IAPost Engine
-        </p>
       </motion.div>
     </div>
   )

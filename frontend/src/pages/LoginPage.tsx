@@ -66,128 +66,108 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background blobs for visual impact */}
-      <div className="bg-glow">
-        <div className="blob blob-blue" />
-        <div className="blob blob-purple" />
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-white">
+      {/* Soft background decor */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-brand-50 rounded-full blur-[120px]" />
+        <div className="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-purple-50 rounded-full blur-[120px]" />
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Logo Section */}
         <div className="text-center mb-10">
-          <motion.div 
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex w-20 h-20 rounded-3xl bg-gradient-to-br from-brand-500 to-indigo-600 items-center justify-center mb-6 shadow-2xl shadow-brand-500/40 relative"
-          >
-            <Zap className="w-10 h-10 text-white fill-white/10" />
-            <div className="absolute inset-0 rounded-3xl bg-white/20 blur-xl -z-10 animate-pulse" />
-          </motion.div>
-          <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight">
-            IAPost
-          </h1>
-          <p className="text-slate-400 mt-2 font-medium tracking-wide uppercase text-xs opacity-70">
-            Intelligent Content Architecture
-          </p>
+          <div className="inline-flex w-20 h-20 rounded-3xl bg-slate-900 items-center justify-center mb-6 shadow-2xl shadow-slate-200">
+            <Zap className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">IAPost</h1>
+          <p className="text-slate-500 mt-2 font-medium">LinkedIn Intelligence Hub</p>
         </div>
 
-        <div className="glass-card p-8 backdrop-blur-2xl border-white/10 shadow-2xl relative overflow-hidden group">
-          {/* Subtle light effect on hover */}
-          <div className="absolute -inset-full h-[200%] w-[200%] rotate-45 bg-gradient-to-r from-transparent via-white/5 to-transparent transition-all duration-1000 group-hover:translate-x-full" />
-
+        <div className="glass-card p-10 shadow-2xl shadow-slate-200/50 border-white/50">
           {!requires2FA ? (
             <>
               <div className="mb-8">
-                <h2 className="text-2xl font-bold text-white">Bienvenido</h2>
-                <p className="text-slate-400 text-sm">Inicia sesión para gestionar tus publicaciones</p>
+                <h2 className="text-2xl font-bold text-slate-900">Bienvenido de nuevo</h2>
+                <p className="text-slate-500 text-sm">Ingresa tus credenciales para continuar</p>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-5">
+              <form onSubmit={handleLogin} className="space-y-6">
                 <div className="space-y-2">
-                  <label className="label text-xs uppercase tracking-widest opacity-60">Correo Electrónico</label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      className="input-field bg-white/5 border-white/5 focus:bg-white/10"
-                      placeholder="nombre@ejemplo.com"
-                      value={email}
-                      onChange={e => setEmail(e.target.value)}
-                      required
-                      autoComplete="email"
-                    />
-                  </div>
+                  <label className="label text-slate-700">Email Corporativo</label>
+                  <input
+                    type="email"
+                    className="input-field"
+                    placeholder="nombre@empresa.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
+                  />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="label text-xs uppercase tracking-widest opacity-60">Contraseña</label>
+                  <div className="flex justify-between items-center">
+                    <label className="label text-slate-700 mb-0">Contraseña</label>
+                    <Link to="/forgot-password" size="sm" className="text-xs text-brand-600 hover:text-brand-700 font-bold">
+                      ¿Olvidaste la clave?
+                    </Link>
+                  </div>
                   <div className="relative">
                     <input
                       type={showPwd ? 'text' : 'password'}
-                      className="input-field bg-white/5 border-white/5 focus:bg-white/10 pr-12"
+                      className="input-field pr-12"
                       placeholder="••••••••"
                       value={password}
                       onChange={e => setPassword(e.target.value)}
                       required
-                      autoComplete="current-password"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPwd(!showPwd)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-slate-500 hover:text-white transition-colors"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-brand-600"
                     >
-                      {showPwd ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      {showPwd ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                 </div>
 
-                <div className="flex justify-end">
-                  <Link to="/forgot-password" size="sm" className="text-xs text-brand-400 hover:text-brand-300 transition-colors font-medium">
-                    ¿Olvidaste la contraseña?
-                  </Link>
-                </div>
-
                 <button 
                   type="submit" 
-                  className="btn-primary w-full py-4 text-lg shadow-xl shadow-brand-600/30 group relative overflow-hidden"
+                  className="btn-creative w-full group py-5"
                   disabled={loading}
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Entrar al Sistema"}
+                  <span className="relative z-10 flex items-center justify-center gap-3">
+                    {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Iniciar Sesión"}
+                    {!loading && <motion.span animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>&rarr;</motion.span>}
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                 </button>
               </form>
 
-              <div className="mt-8 pt-6 border-t border-white/5 text-center">
+              <div className="mt-10 pt-8 border-t border-slate-100 text-center">
                 <p className="text-slate-500 text-sm">
-                  ¿No tienes una cuenta?{' '}
-                  <Link to="/register" className="text-white hover:text-brand-400 font-bold transition-colors">
-                    Crea una ahora
+                  ¿Aún no tienes cuenta?{' '}
+                  <Link to="/register" className="text-brand-600 hover:text-brand-700 font-black decoration-brand-600/30 decoration-2 underline-offset-4 underline">
+                    Regístrate gratis
                   </Link>
                 </p>
               </div>
             </>
           ) : (
             <>
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 rounded-2xl bg-brand-500/10 flex items-center justify-center mx-auto mb-4 border border-brand-500/20">
-                  <ShieldCheck className="w-8 h-8 text-brand-400" />
+              <div className="text-center mb-10">
+                <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-6 border-4 border-white shadow-xl shadow-emerald-100">
+                  <ShieldCheck className="w-10 h-10 text-emerald-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Seguridad Activa</h2>
-                <p className="text-slate-400 text-sm mt-1">Introduce el código de tu autenticador</p>
+                <h2 className="text-2xl font-bold text-slate-900">Verificación 2FA</h2>
+                <p className="text-slate-500 text-sm mt-2">Introduce el código de 6 dígitos de tu app</p>
               </div>
 
-              <form onSubmit={handle2FA} className="space-y-6">
+              <form onSubmit={handle2FA} className="space-y-8">
                 <input
                   type="text"
-                  className="input-field text-center text-3xl tracking-[0.5em] font-mono py-5 bg-brand-500/5 border-brand-500/20 focus:border-brand-500/50"
+                  className="input-field text-center text-4xl tracking-[0.4em] font-black py-6 bg-slate-50 border-slate-100"
                   placeholder="000000"
                   maxLength={6}
                   value={totpCode}
@@ -195,23 +175,18 @@ export default function LoginPage() {
                   autoFocus
                   required
                 />
-                <div className="space-y-3">
-                  <button type="submit" className="btn-primary w-full py-4 shadow-xl shadow-brand-600/30" disabled={loading || totpCode.length !== 6}>
-                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Verificar Identidad"}
+                <div className="space-y-4">
+                  <button type="submit" className="btn-creative w-full py-5" disabled={loading || totpCode.length !== 6}>
+                    {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Verificar e Ingresar"}
                   </button>
-                  <button type="button" className="btn-secondary w-full py-4 opacity-70 hover:opacity-100" onClick={() => setRequires2FA(false)}>
-                    Cancelar
+                  <button type="button" className="w-full text-slate-400 font-bold text-sm py-2 hover:text-slate-600 transition-colors" onClick={() => setRequires2FA(false)}>
+                    Cancelar y Volver
                   </button>
                 </div>
               </form>
             </>
           )}
         </div>
-
-        {/* Footer info */}
-        <p className="text-center text-slate-600 text-[10px] uppercase tracking-[0.2em] mt-10">
-          IAPost Platform &copy; 2026 &bull; Secure Environment
-        </p>
       </motion.div>
     </div>
   )
