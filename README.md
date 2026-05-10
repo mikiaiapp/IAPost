@@ -21,35 +21,42 @@ IAPost es una aplicación web (PWA) autohospedada diseñada para profesionales q
 - **Automatización**: APScheduler para tareas programadas.
 - **Despliegue**: Docker & Docker Compose.
 
-## 🚀 Despliegue Rápido
+## 🚀 Despliegue en NAS (Synology/Docker)
 
-### Requisitos previos
-- Docker y Docker Compose instalados.
-- Un contenedor ["Cartero"](https://github.com/mikiaiapp/cartero) ejecutándose (opcional, pero recomendado para emails).
+### 1. Preparación de carpetas en el NAS
+Para un correcto despliegue, debes crear la estructura de carpetas necesaria en el **volumen 1** de tu NAS (o el que corresponda):
 
-### Instalación
+1. Abre **File Station**.
+2. Navega a `docker/iapost` (o la ruta que hayas definido).
+3. Crea las siguientes carpetas:
+   - `/volume1/docker/iapost/data` (Para la base de datos SQLite).
+   - `/volume1/docker/iapost/logs` (Para los logs del sistema).
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone https://github.com/mikiaiapp/IAPost.git
-   cd IAPost
-   ```
+### 2. Requisitos previos
+- Docker y Docker Compose instalados en el NAS (Container Manager).
+- Un contenedor ["Cartero"](https://github.com/mikiaiapp/cartero) ejecutándose en la misma red o accesible vía IP.
+
+### 3. Instalación
+
+1. **Subir los archivos:**
+   Sube todo el contenido de este repositorio a tu carpeta del NAS (ej: `/volume1/docker/iapost`).
 
 2. **Configurar variables de entorno:**
-   Copia el archivo de ejemplo y edítalo con tus claves:
+   Edita el archivo `.env` en la raíz (puedes usar el Editor de Texto del NAS):
    ```bash
    cp .env.example .env
    ```
-   *Nota: Asegúrate de configurar `SECRET_KEY`, `ENCRYPTION_KEY` y las URLs de los servicios.*
+   *Nota: Asegúrate de que `DATABASE_URL` apunte a `/app/data/iapost.db` y las rutas de volúmenes en `docker-compose.yml` coincidan con tu NAS.*
 
-3. **Levantar con Docker Compose:**
+3. **Levantar el Stack:**
+   Desde SSH o usando Container Manager de Synology:
    ```bash
    docker-compose up -d --build
    ```
 
 4. **Acceder a la aplicación:**
-   - Frontend: `http://localhost:3000`
-   - API Backend: `http://localhost:8000/docs`
+   - Frontend: `http://[IP-DEL-NAS]:3000`
+   - API Backend: `http://[IP-DEL-NAS]:8000/docs`
 
 ## ⚙️ Configuración de IA
 

@@ -18,8 +18,8 @@ services:
       - SCHEDULER_MINUTE=${SCHEDULER_MINUTE:-30}
       - TZ=Europe/Madrid
     volumes:
-      - iapost_data:/app/data
-      - iapost_logs:/app/logs
+      - /volume1/docker/iapost/data:/app/data
+      - /volume1/docker/iapost/logs:/app/logs
     ports:
       - "8000:8000"
     networks:
@@ -45,10 +45,6 @@ services:
     depends_on:
       backend:
         condition: service_healthy
-
-volumes:
-  iapost_data:
-  iapost_logs:
 
 networks:
   iapost_network:
