@@ -17,10 +17,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from core.database import get_db
-from core.security import (
     get_password_hash, verify_password, create_access_token,
     get_current_active_user
 )
+import logging
+logger = logging.getLogger(__name__)
 from models.user import User
 from models.source import Source, DEFAULT_SOURCES, SourceCategory, SourceType
 from services.email_service import send_verification_email, send_password_reset_email
@@ -113,12 +114,24 @@ async def register(
         db.add(source)
 
     await db.commit()
+    logger.info(f"User {payload.username} registered and seeded with default sources.")
 
     # Send verification email
-    base_url = str(request.base_url).rstrip("/").replace("8000", "3000")
-    await send_verification_email(payload.email, payload.username, token, base_url)
-
-    return {"message": "Usuario creado. Revisa tu email para verificar la cuenta."}
+    try:
+        base_url = str(request.base_url).rstrip("/")
+        if ":8008" in base_url:
+            base_url = base_url.replace(":8008", ":3333")
+        elif ":8000" in base_url:
+            base_url = base_url.replace(":8000", ":3333")
+        
+        await send_verification_email(payload.email, payload.username, token, base_url)
+        return {"message": "Usuario creado. Revisa tu email para verificar la cuenta."}
+    except Exception as e:
+        logger.error(f"Failed to send verification email to {payload.email}: {e}")
+        return {
+            "message": "Usuario creado, pero hubo un problema al enviar el email de verificación. Por favor, contacta con soporte.",
+            "error_info": "email_service_error"
+        }
 
 
 @router.post("/login", response_model=LoginResponse)
