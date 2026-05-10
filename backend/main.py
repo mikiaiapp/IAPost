@@ -25,11 +25,22 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
     logger.info("Starting IAPost Backend...")
+    # Database initialization
     try:
+        import os
+        db_path = settings.DATABASE_URL.split(":////")[-1]
+        db_dir = os.path.dirname(db_path)
+        logger.info(f"📁 Database directory: {db_dir}")
+        logger.info(f"📁 Database path: {db_path}")
+        
+        if not os.path.exists(db_dir):
+            logger.warning(f"⚠️ Directory {db_dir} does not exist. Creating it...")
+            os.makedirs(db_dir, exist_ok=True)
+            
         await init_db()
-        logger.info("Database initialized successfully.")
+        logger.info("✅ Database initialized successfully")
     except Exception as e:
-        logger.error(f"Failed to initialize database: {e}", exc_info=True)
+        logger.error(f"❌ Database initialization failed: {e}", exc_info=True)
         # We don't raise here so the app can at least start and respond to health checks / logs
     
     try:
