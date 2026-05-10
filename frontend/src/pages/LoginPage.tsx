@@ -26,7 +26,7 @@ export default function LoginPage() {
       const form = new FormData()
       form.append('username', email)
       form.append('password', password)
-      const { data } = await api.post('/api/auth/login', form, {
+      const { data } = await api.post('/auth/login', form, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       })
       if (data.requires_2fa) {
@@ -50,7 +50,7 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      const { data } = await api.post('/api/auth/verify-2fa', {
+      const { data } = await api.post('/auth/verify-2fa', {
         user_id: userId,
         totp_code: totpCode,
         temp_token: tempToken,
@@ -135,12 +135,11 @@ export default function LoginPage() {
 
                 <button 
                   type="submit" 
-                  className="btn-creative w-full group py-5"
+                  className="btn-creative w-full"
                   disabled={loading}
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-3">
-                    {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : "Iniciar Sesión"}
-                    {!loading && <motion.span animate={{ x: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>&rarr;</motion.span>}
+                  <span>
+                    {loading ? <Loader2 className="w-6 h-6 animate-spin inline mr-2" /> : "Iniciar Sesión"}
                   </span>
                 </button>
               </form>

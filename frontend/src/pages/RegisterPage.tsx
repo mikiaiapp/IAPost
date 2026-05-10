@@ -17,7 +17,7 @@ export default function RegisterPage() {
     e.preventDefault()
     setLoading(true)
     try {
-      await api.post('/api/auth/register', form)
+      await api.post('/auth/register', form)
       toast.success('Cuenta creada. Revisa tu email para verificarla.')
       navigate('/login')
     } catch (err: any) {
@@ -103,11 +103,11 @@ export default function RegisterPage() {
 
             <button 
               type="submit" 
-              className="btn-creative w-full py-5 mt-6" 
+              className="btn-creative w-full mt-6" 
               disabled={loading}
             >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                {loading && <Loader2 className="w-6 h-6 animate-spin" />}
+              <span>
+                {loading && <Loader2 className="w-6 h-6 animate-spin inline mr-2" />}
                 Registrarme Ahora
               </span>
             </button>
