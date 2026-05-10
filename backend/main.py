@@ -13,13 +13,18 @@ from core.scheduler import start_scheduler, shutdown_scheduler
 from routers import auth, users, posts, sources, ai_config, scraper, health
 
 # Configure logging
+log_handlers = [logging.StreamHandler()]
+try:
+    import os
+    os.makedirs("/app/logs", exist_ok=True)
+    log_handlers.append(logging.FileHandler("/app/logs/iapost.log"))
+except Exception as e:
+    print(f"Warning: Could not setup file logging: {e}")
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler("/app/logs/iapost.log"),
-    ],
+    handlers=log_handlers,
 )
 logger = logging.getLogger(__name__)
 
