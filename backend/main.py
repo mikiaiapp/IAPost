@@ -33,9 +33,19 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
     logger.info("Starting IAPost Backend...")
-    await init_db()
-    start_scheduler()
-    logger.info(f"Scheduler started - Daily run at {settings.SCHEDULER_HOUR:02d}:{settings.SCHEDULER_MINUTE:02d}")
+    try:
+        await init_db()
+        logger.info("Database initialized successfully.")
+    except Exception as e:
+        logger.error(f"Failed to initialize database: {e}", exc_info=True)
+        # We don't raise here so the app can at least start and respond to health checks / logs
+    
+    try:
+        start_scheduler()
+        logger.info(f"Scheduler started - Daily run at {settings.SCHEDULER_HOUR:02d}:{settings.SCHEDULER_MINUTE:02d}")
+    except Exception as e:
+        logger.error(f"Failed to start scheduler: {e}", exc_info=True)
+    
     yield
     shutdown_scheduler()
     logger.info("IAPost Backend stopped.")
