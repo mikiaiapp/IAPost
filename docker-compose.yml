@@ -21,7 +21,7 @@ services:
       - /volume1/docker/iapost/data:/app/data
       - /volume1/docker/iapost/logs:/app/logs
     ports:
-      - "8000:8000"
+      - "8008:8000"
     networks:
       - iapost_network
     healthcheck:
